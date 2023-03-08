@@ -1,0 +1,46 @@
+{
+  "name": "university_attendance_system_backend",
+  "version": "0.0.1",
+  "description": "This repository contains the backend for a university attendance management system developed by a team of undergraduate students of Sabaragamuwa University of Sri Lanka, for their mini project under their 3rd year 1st semester.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c-koder/university-attendance-system-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/c-koder/university-attendance-system-backend/issues"
+  },
+  "homepage": "https://github.com/c-koder/university-attendance-system-backend#readme",
+  "contributors": [
+    "C. K. Nugekotuwa <cknugekotuwa@std.appsc.sab.ac.lk>",
+    "H. K. H. P. Ariyasinghe <hkhpariyasinghe@std.appsc.sab.ac.lk>",
+    "S. M. T. D. Samarakoon <smtdsamarakoon@std.appsc.sab.ac.lk>",
+    "W. A. S. Y. Wanniarachchi <wasywanniarachchi@std.appsc.sab.ac.lk>"
+  ],
+  "license": "UNLICENSED",
+  "main": "index.js",
+  "private": "true",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express-jwt": "^8.4.1",
+    "express": "^4.18.2",
+    "joi": "^17.8.3",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.2.0",
+    "nodemailer": "^6.9.1",
+    "rootpath": "^0.1.2",
+    "sequelize": "^6.29.1",
+    "swagger-ui-express": "^4.6.2",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
