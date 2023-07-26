@@ -23,6 +23,9 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
+db.attendance = require("../models/attendance.model.js")(sequelize, Sequelize);
+db.course = require("../models/course.model.js")(sequelize, Sequelize);
+
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -34,6 +37,18 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId",
 });
+
+db.user.hasMany(db.course);
+db.course.belongsTo(db.user);
+
+db.user.hasMany(db.course);
+db.course.belongsTo(db.user);
+
+db.user.hasMany(db.attendance);
+db.attendance.belongsTo(db.user);
+
+db.course.hasMany(db.attendance);
+db.attendance.belongsTo(db.course);
 
 db.ROLES = ["student", "lecturer", "admin"];
 
