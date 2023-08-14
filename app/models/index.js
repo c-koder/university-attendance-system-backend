@@ -22,9 +22,9 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
-
-db.attendance = require("../models/attendance.model.js")(sequelize, Sequelize);
 db.course = require("../models/course.model.js")(sequelize, Sequelize);
+db.lecture = require("../models/lecture.model.js")(sequelize, Sequelize);
+db.attendance = require("../models/attendance.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -38,17 +38,32 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId",
 });
 
-db.user.hasMany(db.course);
-db.course.belongsTo(db.user);
+db.user.belongsToMany(db.course, { through: "user_courses" });
+db.course.belongsToMany(db.user, { through: "user_courses" });
 
-db.user.hasMany(db.course);
-db.course.belongsTo(db.user);
+db.user.hasMany(db.attendance, {
+  foreignKey: "user_id",
+});
 
-db.user.hasMany(db.attendance);
-db.attendance.belongsTo(db.user);
+db.course.hasMany(db.lecture, {
+  foreignKey: "course_id",
+});
 
-db.course.hasMany(db.attendance);
-db.attendance.belongsTo(db.course);
+db.lecture.belongsTo(db.course, {
+  foreignKey: "course_id",
+});
+
+db.lecture.hasMany(db.attendance, {
+  foreignKey: "lecture_id",
+});
+
+db.attendance.belongsTo(db.user, {
+  foreignKey: "user_id",
+});
+
+db.attendance.belongsTo(db.lecture, {
+  foreignKey: "lecture_id",
+});
 
 db.ROLES = ["student", "lecturer", "admin"];
 
