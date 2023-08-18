@@ -29,7 +29,6 @@ const { authJwt } = require("../middleware");
  *         description: Unable to validate Lecturer or Admin role!
  *
  */
-
 router.get(
   "/",
   [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
@@ -75,6 +74,12 @@ router.get(
   "/:course_id/students",
   [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
   CourseController.getEnrolledStudents
+);
+
+router.get(
+  "/no-students",
+  [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
+  CourseController.getUnEnrolledStudents
 );
 
 /**
@@ -163,6 +168,53 @@ router.post(
   "/enroll/:student_id/:course_id",
   [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
   CourseController.enrollStudent
+);
+
+/**
+ * @swagger
+ * /course/unenroll/{student_id}/{course_id}:
+ *   post:
+ *     summary: Un enroll a student in a course
+ *     tags:
+ *       - Course
+ *     parameters:
+ *       - name: student_id
+ *         in: path
+ *         required: true
+ *         description: ID of the student to enroll
+ *         schema:
+ *           type: integer
+ *       - name: course_id
+ *         in: path
+ *         required: true
+ *         description: ID of the course to enroll in
+ *         schema:
+ *           type: integer
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Student un-enrolled successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Invalid request or student not enrolled
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Require Lecturer or Admin Role
+ *       500:
+ *         description: Unable to validate Lecturer or Admin role!
+ */
+router.delete(
+  "/unenroll/:student_id/:course_id",
+  [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
+  CourseController.unEnrollStudent
 );
 
 /**

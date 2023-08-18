@@ -16,7 +16,7 @@ exports.generateAttendanceReport = async (req, res) => {
         { model: User, attributes: ["id", "full_name", "reg_no"] },
         {
           model: Lecture,
-          attributes: ["course_id"],
+          attributes: ["course_id", "date_time"],
           include: [{ model: Course, attributes: ["name"] }],
         },
       ],

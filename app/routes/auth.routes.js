@@ -2,6 +2,7 @@ const router = require("express").Router();
 const AuthController = require("../controllers/auth.controller");
 
 const { verifySignUp } = require("../middleware");
+
 /**
  * @swagger
  * /auth/signup:
@@ -52,7 +53,6 @@ const { verifySignUp } = require("../middleware");
  *     security:
  *       - bearerAuth: []
  */
-
 router.post(
   "/signup",
   [verifySignUp.checkDuplicateEmail, verifySignUp.checkRolesExisted],
