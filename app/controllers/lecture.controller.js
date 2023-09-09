@@ -38,6 +38,12 @@ exports.generateOTP = async (req, res) => {
       return res.status(404).json({ message: "Lecture not found" });
     }
 
+    if (lecture.verification_code !== null) {
+      return res
+        .status(400)
+        .json({ message: "OTP already exists for this lecture" });
+    }
+
     const otp = Math.floor(1000 + Math.random() * 9000);
     lecture.verification_code = otp;
     lecture.verification_code_timestamp = new Date();
@@ -48,7 +54,7 @@ exports.generateOTP = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "OTP generated and sent successfully", otp });
+      .json({ lecture, message: "OTP generated and sent successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -85,10 +91,16 @@ exports.updateStartTime = async (req, res) => {
       return res.status(404).json({ message: "Lecture not found" });
     }
 
+    if (lecture.start_time !== null) {
+      return res.status(400).json({ message: "Lecture already started" });
+    }
+
     lecture.start_time = start_time;
     await lecture.save();
 
-    return res.status(200).json({ message: "Start time updated successfully" });
+    return res
+      .status(200)
+      .json({ lecture, message: "Start time updated successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -105,10 +117,16 @@ exports.updateEndTime = async (req, res) => {
       return res.status(404).json({ message: "Lecture not found" });
     }
 
+    if (lecture.end_time !== null) {
+      return res.status(400).json({ message: "Lecture already ended" });
+    }
+
     lecture.end_time = end_time;
     await lecture.save();
 
-    return res.status(200).json({ message: "End time updated successfully" });
+    return res
+      .status(200)
+      .json({ lecture, message: "End time updated successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -10,6 +10,12 @@ router.get(
 );
 
 router.get(
+  "/all-students",
+  [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
+  CourseController.getAllStudents
+);
+
+router.get(
   "/:course_id/students",
   [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
   CourseController.getEnrolledStudents

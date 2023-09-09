@@ -14,6 +14,23 @@ exports.getAllCourses = async (req, res) => {
   }
 };
 
+exports.getAllStudents = async (req, res) => {
+  try {
+    const students = await User.findAll({
+      include: [
+        {
+          model: db.role,
+          where: { name: "Student" },
+        },
+      ],
+    });
+
+    res.status(200).json(students);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.getEnrolledStudents = async (req, res) => {
   const courseId = req.params.course_id;
 
