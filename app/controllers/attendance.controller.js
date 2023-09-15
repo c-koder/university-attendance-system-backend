@@ -84,25 +84,38 @@ exports.getAttendanceHistory = async (req, res) => {
   try {
     const lectureAttendance = await Attendance.findAll({
       where: {
-        lecture_id: lectureId,
+        user_id: user_id,
       },
       include: [
-        { model: User, attributes: ["id", "full_name", "reg_no"] },
         {
           model: Lecture,
-          attributes: ["course_id", "date_time"],
+          where: {
+            course_id: course_id,
+          },
+          attributes: ["hall", "date_time"],
           include: [{ model: Course, attributes: ["name"] }],
         },
+        {
+          model: User,
+          attributes: ["reg_no", "id"],
+        },
+      ],
+      attributes: [
+        "id",
+        "verification_one",
+        "verification_one_timestamp",
+        "verification_two",
+        "verification_two_timestamp",
       ],
     });
 
-    if (!lectureAttendance) {
+    if (!lectureAttendance || lectureAttendance.length === 0) {
       return res.status(404).json({ message: "Attendance data not found" });
     }
 
-    const attendanceReport = lectureAttendance.map((attendance) => ({
+    const attendanceHistory = lectureAttendance.map((attendance) => ({
       id: attendance.id,
-      user_id: attendance.user_id,
+      user_id: user_id,
       full_name: attendance.user.full_name,
       reg_no: attendance.user.reg_no,
       course_name: attendance.lecture.course.name,
@@ -114,7 +127,7 @@ exports.getAttendanceHistory = async (req, res) => {
       verification_two_timestamp: attendance.verification_two_timestamp,
     }));
 
-    res.status(200).json({ report: attendanceReport });
+    res.status(200).json({ attendanceHistory });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
