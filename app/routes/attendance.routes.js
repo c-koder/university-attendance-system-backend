@@ -9,6 +9,12 @@ router.get(
   AttendanceController.generateAttendanceReport
 );
 
+router.get(
+  "/history/:user_id/:course_id",
+  [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
+  AttendanceController.getAttendanceHistory
+);
+
 router.post("/", [authJwt.verifyToken], AttendanceController.createAttendance);
 
 router.post(

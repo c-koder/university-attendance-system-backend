@@ -7,7 +7,14 @@ exports.viewProfile = async (req, res) => {
 
   try {
     const user = await User.findByPk(userId, {
-      attributes: ["id", "full_name", "email", "department", "reg_no"],
+      attributes: [
+        "id",
+        "avatar",
+        "full_name",
+        "email",
+        "department",
+        "reg_no",
+      ],
     });
 
     if (!user) {
@@ -42,7 +49,7 @@ exports.getEnrolledCourses = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   const userId = req.userId;
-  const { full_name, email, department, reg_no } = req.body;
+  const { avatar, full_name, email, department, reg_no } = req.body;
 
   try {
     const user = await User.findByPk(userId);
@@ -51,6 +58,7 @@ exports.updateProfile = async (req, res) => {
       return res.status(404).json({ message: "Student not found" });
     }
 
+    user.avatar = avatar;
     user.full_name = full_name;
     user.email = email;
     user.department = department;

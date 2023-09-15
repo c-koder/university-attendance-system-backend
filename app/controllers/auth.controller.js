@@ -9,10 +9,11 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 exports.signup = async (req, res) => {
-  const { full_name, email, password, department, reg_no } = req.body;
+  const { avatar, full_name, email, password, department, reg_no } = req.body;
 
   try {
     const user = await User.create({
+      avatar,
       full_name,
       email,
       password: bcrypt.hashSync(password, 8),

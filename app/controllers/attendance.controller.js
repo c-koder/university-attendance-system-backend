@@ -27,9 +27,13 @@ exports.generateAttendanceReport = async (req, res) => {
     }
 
     const attendanceReport = lectureAttendance.map((attendance) => ({
+      id: attendance.id,
       user_id: attendance.user_id,
       full_name: attendance.user.full_name,
+      reg_no: attendance.user.reg_no,
       course_name: attendance.lecture.course.name,
+      hall: attendance.lecture.hall,
+      date_time: attendance.lecture.date_time,
       verification_one: attendance.verification_one,
       verification_one_timestamp: attendance.verification_one_timestamp,
       verification_two: attendance.verification_two,
@@ -69,6 +73,48 @@ exports.createAttendance = async (req, res) => {
     });
 
     res.status(201).json(attendance);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getAttendanceHistory = async (req, res) => {
+  const { user_id, course_id } = req.params;
+
+  try {
+    const lectureAttendance = await Attendance.findAll({
+      where: {
+        lecture_id: lectureId,
+      },
+      include: [
+        { model: User, attributes: ["id", "full_name", "reg_no"] },
+        {
+          model: Lecture,
+          attributes: ["course_id", "date_time"],
+          include: [{ model: Course, attributes: ["name"] }],
+        },
+      ],
+    });
+
+    if (!lectureAttendance) {
+      return res.status(404).json({ message: "Attendance data not found" });
+    }
+
+    const attendanceReport = lectureAttendance.map((attendance) => ({
+      id: attendance.id,
+      user_id: attendance.user_id,
+      full_name: attendance.user.full_name,
+      reg_no: attendance.user.reg_no,
+      course_name: attendance.lecture.course.name,
+      hall: attendance.lecture.hall,
+      date_time: attendance.lecture.date_time,
+      verification_one: attendance.verification_one,
+      verification_one_timestamp: attendance.verification_one_timestamp,
+      verification_two: attendance.verification_two,
+      verification_two_timestamp: attendance.verification_two_timestamp,
+    }));
+
+    res.status(200).json({ report: attendanceReport });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
