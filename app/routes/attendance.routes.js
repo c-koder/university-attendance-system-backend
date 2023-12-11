@@ -15,7 +15,7 @@ router.get(
   AttendanceController.getAttendanceHistory
 );
 
-router.post("/", [authJwt.verifyToken], AttendanceController.createAttendance);
+router.post("/", AttendanceController.createAttendance);
 
 router.post(
   "/verify-otp/:lecture_id",

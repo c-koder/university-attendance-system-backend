@@ -47,11 +47,23 @@ exports.generateAttendanceReport = async (req, res) => {
 };
 
 exports.createAttendance = async (req, res) => {
-  const { lecture_id } = req.body;
-
-  const user_id = req.userId;
+  const { lecture_id, index } = req.body;
 
   try {
+    const student = await User.findOne({
+      where: {
+        reg_no: index,
+      },
+    });
+
+    if (!student) {
+      return res.status(400).json({
+        message: "Student not found!",
+      });
+    }
+
+    const user_id = student.id;
+
     const existingAttendance = await Attendance.findOne({
       where: {
         user_id: user_id,
@@ -72,7 +84,7 @@ exports.createAttendance = async (req, res) => {
       verification_one_timestamp: new Date(),
     });
 
-    res.status(201).json(attendance);
+    res.status(200).json(attendance);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

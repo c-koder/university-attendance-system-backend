@@ -22,7 +22,7 @@ exports.createLecture = async (req, res) => {
 
   try {
     const lecture = await Lecture.create({ date_time, hall, course_id });
-    res.status(201).json(lecture);
+    res.status(200).json(lecture);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -9,6 +9,12 @@ router.get(
   UserController.getEnrolledCourses
 );
 
+router.get(
+  "/analytics",
+  [authJwt.verifyToken, authJwt.isLecturerOrAdmin],
+  UserController.getAnalytics
+);
+
 router.get("/profile", [authJwt.verifyToken], UserController.viewProfile);
 
 router.put("/profile", [authJwt.verifyToken], UserController.updateProfile);

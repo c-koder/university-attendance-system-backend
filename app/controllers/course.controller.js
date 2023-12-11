@@ -90,7 +90,7 @@ exports.createCourse = async (req, res) => {
     const course = await Course.findOrCreate({
       where: { name: name },
     });
-    res.status(201).json(course);
+    res.status(200).json(course);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
