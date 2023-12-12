@@ -156,7 +156,7 @@ exports.verifyOTP = async (req, res) => {
       return res.status(404).json({ message: "Lecture not found" });
     }
 
-    if (lecture.verification_code === otp) {
+    if (lecture.verification_code === parseInt(otp, 10)) {
       const attendance = await Attendance.findOne({
         where: {
           user_id: userId,
